@@ -46,7 +46,7 @@ button:disabled {
   display: flex;
   justify-content: center;
   min-height: 100vh;
-  padding: 48px 20px;
+  padding: 20px;
 }
 
 .app-card {
@@ -59,7 +59,7 @@ button:disabled {
 }
 
 .app-header {
-  margin-bottom: 28px;
+  margin-bottom: 10px;
 }
 
 .eyebrow {
@@ -272,5 +272,516 @@ blockquote {
   .document-status {
     align-items: flex-start;
     flex-direction: column;
+  }
+}
+
+/* ============================================================
+   Chat window, PDF upload, and citation styling.
+   Append this to the end of client/src/index.css — it builds on
+   the existing tokens (blue #315dbb accent, slate grays, 10-18px
+   radii) and adds one new signature color, an amber "highlighter"
+   tone, used ONLY for source citations so evidence always reads
+   as visually distinct from the rest of the interface.
+   ============================================================ */
+
+:root {
+  --highlight: #e8a93b;
+  --highlight-ink: #7a5310;
+  --highlight-bg: rgba(232, 169, 59, 0.14);
+  --highlight-border: rgba(232, 169, 59, 0.4);
+}
+
+/* ---------- Page-level containment ----------
+   The goal: the page itself never scrolls. The app-shell is
+   pinned to the viewport, app-card becomes a column flex
+   container, and the chat panel is the one flexible child that
+   absorbs remaining space — so it's the only thing with a
+   scrollbar, no matter how long the conversation gets.
+   If ChatWindow isn't a direct child of .app-card in your actual
+   markup, apply "flex: 1 1 auto; min-height: 0;" to whatever
+   wrapper directly contains it instead. */
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.app-shell {
+  height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.app-card {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.app-card > * {
+  flex-shrink: 0;
+}
+
+/* ---------- Chat window ---------- */
+
+.chat-window {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.chat-transcript {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 0;
+  margin-bottom: 4px;
+  padding: 4px 4px 8px;
+  overflow-y: auto;
+}
+
+.chat-transcript::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-transcript::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #d7dfec;
+}
+
+.chat-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 12px;
+  border: 1px dashed #cfd9e8;
+  border-radius: 14px;
+  background: #f9fbff;
+}
+
+.chat-empty-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 6px;
+  color: #315dbb;
+  font-weight: 800;
+  border-radius: 50%;
+  background: #e7edfb;
+}
+
+.chat-empty-title {
+  font-weight: 700;
+  color: #23283a;
+}
+
+.chat-empty-subtitle {
+  color: #65738a;
+  line-height: 1.5;
+}
+
+.chat-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chat-suggestion-chip {
+  margin-top: 0;
+  padding: 8px 12px;
+  color: #315dbb;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border: 1px solid #c9d7f2;
+  border-radius: 999px;
+  background: #ffffff;
+}
+
+.chat-suggestion-chip:hover:not(:disabled) {
+  background: #eef3fd;
+}
+
+.chat-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.chat-row-user {
+  flex-direction: row-reverse;
+}
+
+.chat-avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  border-radius: 50%;
+  background: #94a3bd;
+}
+
+.chat-avatar[data-role="user"] {
+  background: #315dbb;
+}
+
+.chat-avatar[data-role="assistant"] {
+  background: #23283a;
+}
+
+.chat-bubble-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 78%;
+}
+
+.chat-row-user .chat-bubble-stack {
+  align-items: flex-end;
+}
+
+.chat-bubble {
+  padding: 10px 14px;
+  line-height: 1.55;
+  border-radius: 14px;
+}
+
+.chat-bubble-text {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.chat-bubble-user {
+  color: #ffffff;
+  border-bottom-right-radius: 4px;
+  background: #315dbb;
+}
+
+.chat-bubble-assistant {
+  color: #23283a;
+  border: 1px solid #e3e9f2;
+  border-bottom-left-radius: 4px;
+  background: #ffffff;
+}
+
+.chat-bubble-error {
+  color: #991b1b;
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.chat-bubble-typing {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a6b1c6;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.chat-composer {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  margin-top: 10px;
+}
+
+.chat-input {
+  flex: 1;
+  /* 2 lines at 1.5 line-height + vertical padding + border.
+     Row 1 -> 2 grows freely; only beyond that does it scroll. */
+  min-height: 46px;
+  max-height: 72px;
+  margin-top: 0;
+  line-height: 1.5;
+  overflow-y: auto;
+  resize: none;
+}
+
+.chat-send-button {
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
+.chat-hint {
+  margin: 8px 2px 0;
+  color: #9aa5b8;
+  font-size: 0.78rem;
+}
+
+/* ---------- Citations (highlighter motif) ---------- */
+
+.source-citations {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.source-citations-label {
+  color: #9aa5b8;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.source-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.source-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 0;
+  padding: 5px 10px 5px 6px;
+  color: var(--highlight-ink);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--highlight-border);
+  border-radius: 8px 8px 3px 3px;
+  background: var(--highlight-bg);
+}
+
+.source-tab:hover:not(:disabled) {
+  background: rgba(232, 169, 59, 0.24);
+}
+
+.source-tab-open {
+  background: var(--highlight);
+  border-color: var(--highlight);
+  color: #4a3405;
+}
+
+.source-tab-index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: #ffffff;
+  font-size: 0.68rem;
+  border-radius: 50%;
+  background: var(--highlight-ink);
+}
+
+.source-tab-open .source-tab-index {
+  background: #4a3405;
+}
+
+.source-tab-name {
+  max-width: 22ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.source-tab-page {
+  font-variant-numeric: tabular-nums;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  opacity: 0.85;
+}
+
+.source-quote {
+  max-width: 60ch;
+  margin: 2px 0 0;
+  padding: 8px 12px;
+  color: #6b5410;
+  font-size: 0.88rem;
+  font-style: italic;
+  line-height: 1.5;
+  border-left: 3px solid var(--highlight);
+  border-radius: 0 8px 8px 0;
+  background: var(--highlight-bg);
+}
+
+/* ---------- PDF upload ---------- */
+
+.pdf-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pdf-dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 32px 20px;
+  text-align: center;
+  border: 1.5px dashed #b7c7df;
+  border-radius: 14px;
+  background: #f9fbff;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.pdf-dropzone:hover {
+  border-color: #315dbb;
+  background: #f2f6fe;
+}
+
+.pdf-dropzone-active {
+  border-color: #315dbb;
+  background: #eaf0fd;
+}
+
+.pdf-dropzone-busy {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.pdf-dropzone-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  opacity: 0;
+}
+
+.pdf-dropzone-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 6px;
+  color: #315dbb;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  border-radius: 10px;
+  background: #e7edfb;
+}
+
+.pdf-dropzone-title {
+  font-weight: 700;
+  color: #23283a;
+}
+
+.pdf-dropzone-subtitle {
+  color: #708098;
+  font-size: 0.85rem;
+}
+
+.pdf-file-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid #e1e8f4;
+  border-radius: 10px;
+  background: #f8faff;
+}
+
+.pdf-file-chip-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.pdf-file-chip-name {
+  overflow: hidden;
+  color: #23283a;
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-file-chip-size {
+  color: #9aa5b8;
+  font-size: 0.76rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.pdf-file-chip-remove {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-top: 0;
+  padding: 0;
+  color: #708098;
+  font-size: 1.1rem;
+  line-height: 1;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.pdf-file-chip-remove:hover {
+  color: #991b1b;
+  background: #fef2f2;
+}
+
+.pdf-progress-track {
+  width: 100%;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e3e9f2;
+}
+
+.pdf-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: #315dbb;
+  transition: width 0.2s ease;
+}
+
+.pdf-error-message {
+  margin: 0;
+  color: #991b1b;
+  font-size: 0.85rem;
+}
+
+.pdf-upload-button {
+  align-self: flex-start;
+}
+
+@media (max-width: 600px) {
+  .chat-bubble-stack {
+    max-width: 88%;
   }
 }
