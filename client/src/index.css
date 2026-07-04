@@ -1,0 +1,276 @@
+:root {
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color: #172033;
+  background: #f4f7fb;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app-shell {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 48px 20px;
+}
+
+.app-card {
+  width: min(100%, 900px);
+  padding: 32px;
+  background: #ffffff;
+  border: 1px solid #e3e9f2;
+  border-radius: 18px;
+  box-shadow: 0 12px 36px rgba(25, 39, 64, 0.08);
+}
+
+.app-header {
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: #4b70c7;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 10px;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1.1;
+}
+
+h2 {
+  margin-bottom: 0;
+  font-size: 1.1rem;
+  overflow-wrap: anywhere;
+}
+
+.subtitle {
+  max-width: 650px;
+  margin-bottom: 0;
+  color: #65738a;
+  line-height: 1.6;
+}
+
+.document-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid #e1e8f4;
+  border-radius: 12px;
+  background: #f8faff;
+}
+
+.status-label {
+  margin-bottom: 5px;
+  color: #708098;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.status-badge {
+  flex-shrink: 0;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.status-indexing,
+.status-in_progress,
+.status-unknown {
+  color: #8a5c05;
+  background: #fff3d6;
+}
+
+.status-completed {
+  color: #087443;
+  background: #ddf8e9;
+}
+
+.status-failed,
+.status-cancelled {
+  color: #a52727;
+  background: #ffe5e5;
+}
+
+.status-message {
+  margin: 16px 0;
+  color: #5c6a80;
+  line-height: 1.5;
+}
+
+.error-message {
+  margin: 16px 0;
+  padding: 12px;
+  color: #991b1b;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+}
+
+.loading-panel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px;
+  color: #5c6a80;
+  border: 1px dashed #cfd9e8;
+  border-radius: 12px;
+}
+
+.loading-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #4b70c7;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* General styling for your upload/chat components */
+input[type="file"] {
+  display: block;
+  width: 100%;
+  margin: 12px 0 16px;
+  padding: 12px;
+  color: #536178;
+  border: 1px dashed #b7c7df;
+  border-radius: 10px;
+  background: #f9fbff;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px;
+  color: #172033;
+  line-height: 1.5;
+  resize: vertical;
+  border: 1px solid #cbd6e5;
+  border-radius: 10px;
+  outline: none;
+}
+
+textarea:focus {
+  border-color: #4b70c7;
+  box-shadow: 0 0 0 3px rgba(75, 112, 199, 0.15);
+}
+
+button {
+  margin-top: 12px;
+  padding: 10px 16px;
+  color: #ffffff;
+  font-weight: 700;
+  border: 0;
+  border-radius: 9px;
+  background: #315dbb;
+}
+
+button:hover:not(:disabled) {
+  background: #264c9a;
+}
+
+blockquote {
+  margin: 8px 0 0;
+  padding-left: 12px;
+  color: #5c6a80;
+  font-size: 0.9rem;
+  border-left: 3px solid #b8c8e6;
+}
+
+.source-citations {
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid #e1e8f4;
+  border-radius: 10px;
+  background: #f8faff;
+}
+
+.source-citations h4 {
+  margin-bottom: 10px;
+}
+
+.source-citations ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.source-citations li + li {
+  margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+  .app-shell {
+    padding: 20px 12px;
+  }
+
+  .app-card {
+    padding: 22px;
+  }
+
+  .document-status {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
